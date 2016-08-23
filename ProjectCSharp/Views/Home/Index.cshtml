@@ -1,0 +1,20 @@
+﻿@{ViewBag.Title = "Home";}
+
+@model List<ProjectCSharp.Models.Post>
+    
+@foreach (var post in Model)
+{
+    <div class="row">
+        <div class="post col-md-6">
+            <h2>@post.Title</h2>
+            <div>
+                Posted on<i>@post.Date</i>
+                @if (post.Author != null)
+                {
+                    @:by <i>@post.Author.FullName (@post.Author.UserName)</i>
+                }
+            </div>
+            <p>I have created some content !!</p>
+        </div>
+    </div>
+}
