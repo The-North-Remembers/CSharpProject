@@ -49,9 +49,8 @@ namespace ProjectCSharp.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -65,8 +64,26 @@ namespace ProjectCSharp.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+
+        [Required]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

@@ -11,8 +11,11 @@ namespace ProjectCSharp.Models
     public class ApplicationUser : IdentityUser
     {
         [StringLength(50)]
-        public string FullName { get; set; }
-        
+        public string FirstName { get; set; }
+
+        [StringLength(50)]
+        public string LastName { get; set; }
+
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
