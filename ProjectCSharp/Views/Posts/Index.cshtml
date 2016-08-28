@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ProjectCSharp.Models.Post>
+﻿@using System.Diagnostics.Eventing.Reader
+@using ProjectCSharp.Classes
+@model IEnumerable<ProjectCSharp.Models.Post>
 
 @{
     ViewBag.Title = "Index";
@@ -12,27 +14,46 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+           <h3>@Html.DisplayNameFor(model => model.Title)</h3> 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Body)
+           <h3>@Html.DisplayNameFor(model => model.Body)</h3>  
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            <h3>@Html.DisplayNameFor(model => model.Date)</h3>
         </th>
+        <th>
+            <h3>Author</h3> 
+        </th>
+        <th>
+            <h3>Actions</h3> 
+        </th>
+
+
+        
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Body)
+            @Utilities.CutText(item.Body);
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @if (item.Author != null)
+            {
+               <i>@item.Author.UserName</i> 
+            }
+            else
+            {
+              @: <i>(Without Author)</i>
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

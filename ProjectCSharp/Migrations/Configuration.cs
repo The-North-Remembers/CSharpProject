@@ -21,18 +21,18 @@ namespace ProjectCSharp.Migrations
             {
                 // If the database is empty, populate sample data in it
 
-                CreateUser(context, "StanBotev", "Stanislav", "Botev" , "dark@dark.bg","123456");
+                CreateUsers(context, "StanBotev", "Stanislav", "Botev" , "dark@dark.bg","123456");
                 
 
-                CreateRole(context, "Administrators");
-                AddUserToRole(context, "StanBotev", "Administrators");
+                CreateRole(context, "Administrator");
+                AddUserToRole(context, "StanBotev", "Administrator");
 
                
                 context.SaveChanges();
             }
         }
 
-        private void CreateUser(ApplicationDbContext context,
+        private void CreateUsers(ApplicationDbContext context,
             string username , string firstname , string lastname , string email, string password)
         {
             var userManager = new UserManager<ApplicationUser>(

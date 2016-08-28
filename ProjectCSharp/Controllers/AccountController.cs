@@ -139,6 +139,7 @@ namespace ProjectCSharp.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+           
             return View();
         }
 

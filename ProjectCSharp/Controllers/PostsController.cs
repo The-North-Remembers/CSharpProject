@@ -10,6 +10,7 @@ using ProjectCSharp.Models;
 
 namespace ProjectCSharp.Controllers
 {
+    [ValidateInput(false)]
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,7 +18,7 @@ namespace ProjectCSharp.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            return View(db.Posts.ToList());
+            return View(db.Posts.Include(p=>p.Author).ToList());
         }
 
         // GET: Posts/Details/5
@@ -36,6 +37,7 @@ namespace ProjectCSharp.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -45,20 +47,31 @@ namespace ProjectCSharp.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Body,Date")] Post post)
+        public ActionResult Create([Bind(Include = "Id,Title,Body")] Post post)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Posts.Add(post);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    post.Author = db.Users.FirstOrDefault(u=>u.UserName == User.Identity.Name);
+                    db.Posts.Add(post);
+                    post.Date=DateTime.Now;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("","Unable to save changes");
             }
 
             return View(post);
         }
 
         // GET: Posts/Edit/5
+        [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -77,6 +90,7 @@ namespace ProjectCSharp.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,Body,Date")] Post post)
         {
@@ -90,6 +104,7 @@ namespace ProjectCSharp.Controllers
         }
 
         // GET: Posts/Delete/5
+        //[Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -105,6 +120,7 @@ namespace ProjectCSharp.Controllers
         }
 
         // POST: Posts/Delete/5
+        //[Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
