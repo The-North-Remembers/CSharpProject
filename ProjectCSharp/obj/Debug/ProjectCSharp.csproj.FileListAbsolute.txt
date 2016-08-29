@@ -161,4 +161,3 @@ D:\SoftUni\Software Technologies\ProjectForSoftwareTechnologies\ProjectCSharp\CS
 D:\SoftUni\Software Technologies\ProjectForSoftwareTechnologies\ProjectCSharp\CSharpProject\ProjectCSharp\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\SoftUni\Software Technologies\ProjectForSoftwareTechnologies\ProjectCSharp\CSharpProject\ProjectCSharp\obj\Debug\ProjectCSharp.dll
 D:\SoftUni\Software Technologies\ProjectForSoftwareTechnologies\ProjectCSharp\CSharpProject\ProjectCSharp\obj\Debug\ProjectCSharp.pdb
-D:\SoftUni\Software Technologies\ProjectForSoftwareTechnologies\ProjectCSharp\CSharpProject\ProjectCSharp\obj\Debug\ProjectCSharp.csprojResolveAssemblyReference.cache

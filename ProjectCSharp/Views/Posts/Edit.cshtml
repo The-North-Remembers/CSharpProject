@@ -28,12 +28,25 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control",@rows = "10"} })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                <select>
+                    @foreach (var author in ViewBag.Authors)
+                    {
+                        <option value="@author.Id">@author.UserName</option>
+                    }
+                    <option value="one"></option>
+                </select>
+                @Html.ValidationMessageFor(model => model.Author, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

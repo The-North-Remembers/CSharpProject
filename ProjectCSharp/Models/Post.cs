@@ -23,5 +23,7 @@ namespace ProjectCSharp.Models
         public DateTime Date { get; set; }
 
         public ApplicationUser Author { get; set; }
+
+        
     }
 }

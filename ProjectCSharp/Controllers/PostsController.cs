@@ -83,6 +83,8 @@ namespace ProjectCSharp.Controllers
             {
                 return HttpNotFound();
             }
+            var authors = db.Users.ToList();
+            ViewBag.Authors = authors;
             return View(post);
         }
 
@@ -96,6 +98,7 @@ namespace ProjectCSharp.Controllers
         {
             if (ModelState.IsValid)
             {
+                post.Date = DateTime.Now;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -104,7 +107,7 @@ namespace ProjectCSharp.Controllers
         }
 
         // GET: Posts/Delete/5
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -120,7 +123,7 @@ namespace ProjectCSharp.Controllers
         }
 
         // POST: Posts/Delete/5
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
