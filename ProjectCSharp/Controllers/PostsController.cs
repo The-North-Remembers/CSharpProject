@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ProjectCSharp.Extensions;
 using ProjectCSharp.Models;
 
 namespace ProjectCSharp.Controllers
@@ -59,6 +60,7 @@ namespace ProjectCSharp.Controllers
                     db.Posts.Add(post);
                     post.Date=DateTime.Now;
                     db.SaveChanges();
+                    this.AddNotification("Post created!", NotificationType.INFO);
                     return RedirectToAction("Index");
                 }
             }

@@ -8,7 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ProjectCSharp.Extensions;
 using ProjectCSharp.Models;
+
 
 namespace ProjectCSharp.Controllers
 {
@@ -79,6 +81,7 @@ namespace ProjectCSharp.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    this.AddNotification("Log in successful!", NotificationType.SUCCESS);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -163,7 +166,7 @@ namespace ProjectCSharp.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    this.AddNotification("Successful registration!",NotificationType.SUCCESS);
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -393,6 +396,7 @@ namespace ProjectCSharp.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            this.AddNotification("You have loged off!", NotificationType.WARNING);
             return RedirectToAction("Index", "Home");
         }
 
