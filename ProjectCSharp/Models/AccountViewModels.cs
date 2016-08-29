@@ -64,10 +64,6 @@ namespace ProjectCSharp.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name="UserRoles")]
-        public string UserRoles { get; set; }
-
-        [Required]
         [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [Display(Name = "Username")]
@@ -100,6 +96,9 @@ namespace ProjectCSharp.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "UserRoles")]
+        public string UserRoles { get; set; }
     }
 
     public class ResetPasswordViewModel

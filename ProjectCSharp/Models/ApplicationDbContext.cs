@@ -23,5 +23,6 @@ namespace ProjectCSharp.Models
         }
 
         public System.Data.Entity.DbSet<ProjectCSharp.Models.Post> Posts { get; set; }
+       // public System.Data.Entity.DbSet<ProjectCSharp.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

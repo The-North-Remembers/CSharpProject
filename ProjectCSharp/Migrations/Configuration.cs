@@ -97,6 +97,7 @@ namespace ProjectCSharp.Migrations
             var userManager = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
             var addAdminRoleResult = userManager.AddToRole(user.Id, roleName);
+           
             if (!addAdminRoleResult.Succeeded)
             {
                 throw new Exception(string.Join("; ", addAdminRoleResult.Errors));

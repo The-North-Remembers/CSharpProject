@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace ProjectCSharp.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+
         [StringLength(50)]
         public string FirstName { get; set; }
 
@@ -23,6 +25,20 @@ namespace ProjectCSharp.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
+        }
+
+        public List<IdentityRole> GetUserRoles()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var roleManager = new RoleManager<IdentityRole>(
+                new RoleStore<IdentityRole>(db));
+
+            List<IdentityRole> roles = new List<IdentityRole>();
+            foreach (IdentityUserRole role in Roles)
+            {
+                roles.Add(roleManager.FindById(role.RoleId));
+            }
+            return roles;
         }
     }
 }
