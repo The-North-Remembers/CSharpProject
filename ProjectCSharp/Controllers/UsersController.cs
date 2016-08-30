@@ -178,8 +178,10 @@ namespace ProjectCSharp.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ApplicationUser user = db.Users.Find(id);
+            //TODO: remove posts from user
             db.Users.Remove(user);
             db.SaveChanges();
+            this.AddNotification("User deleted!", NotificationType.SUCCESS);
             return RedirectToAction("Index");
         }
 

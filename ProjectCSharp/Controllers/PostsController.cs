@@ -103,6 +103,7 @@ namespace ProjectCSharp.Controllers
                 post.Date = DateTime.Now;
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
+                this.AddNotification("Post edited!", NotificationType.INFO);
                 return RedirectToAction("Index");
             }
             return View(post);
@@ -133,6 +134,7 @@ namespace ProjectCSharp.Controllers
             Post post = db.Posts.Find(id);
             db.Posts.Remove(post);
             db.SaveChanges();
+            this.AddNotification("Post deleted!", NotificationType.SUCCESS);
             return RedirectToAction("Index");
         }
 
