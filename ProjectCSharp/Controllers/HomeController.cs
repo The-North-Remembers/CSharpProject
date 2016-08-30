@@ -15,8 +15,8 @@ namespace ProjectCSharp.Controllers
         //GET:Posts
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p => p.Author).OrderByDescending(p => p.Date).Take(3);
-            return View(posts.ToList());
+           var posts = db.Posts.Include(p => p.Author).OrderByDescending(p => p.Date).Take(3);
+           return View(posts.ToList());
         }
 
         

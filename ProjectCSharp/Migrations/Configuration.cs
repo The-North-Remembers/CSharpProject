@@ -22,10 +22,13 @@ namespace ProjectCSharp.Migrations
                 // If the database is empty, populate sample data in it
 
                 CreateUsers(context, "StanBotev", "Stanislav", "Botev" , "dark@dark.bg","123456");
+                CreateUsers(context, "Ekateristotel", "Ekaterina", "Kaprieva", "eti@etika.bg", "123456");
                 
-
                 CreateRole(context, "Administrator");
+                CreateRole(context, "User");
+
                 AddUserToRole(context, "StanBotev", "Administrator");
+                AddUserToRole(context,"Ekateristotel","User");
 
                 CreatePost(context,
                     title: "Norway",
