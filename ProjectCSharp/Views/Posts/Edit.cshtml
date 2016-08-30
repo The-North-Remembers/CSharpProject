@@ -40,7 +40,14 @@
                     <option value=""></option>
                     @foreach (var author in ViewBag.Authors)
                     {
-                        <option value="@author.Id">@author.UserName</option>
+                        if (Model.Author.Id == author.Id)
+                        {
+                            <option selected value="@author.Id">@author.UserName</option>
+                        }
+                        else
+                        {
+                            <option value="@author.Id">@author.UserName</option>
+                        }
                     }
                 </select>
                 @Html.ValidationMessageFor(model => model.Author, "", new {@class = "text-danger"})

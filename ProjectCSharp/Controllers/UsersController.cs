@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ProjectCSharp.Extensions;
 using ProjectCSharp.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
+
+
 
 namespace ProjectCSharp.Controllers
 {
@@ -15,6 +16,42 @@ namespace ProjectCSharp.Controllers
     public class UsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public UsersController()
+        {
+        }
+
+        public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Users
         [Authorize(Roles = "Administrator")]
@@ -52,23 +89,35 @@ namespace ProjectCSharp.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Body")] ApplicationUser user)
+        public async Task<ActionResult> Create(RegisterViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var user = new ApplicationUser
                 {
-                    db.SaveChanges();
-                    this.AddNotification("User created!", NotificationType.INFO);
-                    return RedirectToAction("Index");
+                    UserName = model.UserName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email
+                };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    this.AddNotification("Successful user creation!", NotificationType.SUCCESS);
+                    return RedirectToAction("Index", "Users");
                 }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("","Unable to save changes");
+               // AddErrors(result);
             }
 
-            return View(user);
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         // GET: Users/Edit/5
@@ -142,5 +191,7 @@ namespace ProjectCSharp.Controllers
             }
             base.Dispose(disposing);
         }
+
+
     }
 }
