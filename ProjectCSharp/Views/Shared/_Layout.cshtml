@@ -12,11 +12,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <span class="date_time">
-        <script type="text/javascript">
-            window.onload = date_time('date_time');
-        </script>
-    </span>
+    
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -36,7 +32,8 @@
                 {
                     <li>@Html.ActionLink("Users", "Index", "Users")</li>
                 }
-              </ul>
+                <li><a id="date_time"></a></li>
+            </ul>
             @Html.Partial("_LoginPartial")
         </div>
     </div>
@@ -53,5 +50,10 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() { date_time('date_time'); });
+    </script>
+
 </body>
 </html>

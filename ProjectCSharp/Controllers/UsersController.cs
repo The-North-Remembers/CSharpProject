@@ -60,22 +60,6 @@ namespace ProjectCSharp.Controllers
             return View(db.Users.ToList());
         }
 
-        // GET: Users/Details/5
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
-
         // GET: Users/Create
         [Authorize(Roles = "Administrator")]
         public ActionResult Create()
@@ -144,12 +128,12 @@ namespace ProjectCSharp.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName")] ApplicationUser user)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,RoleId")] EditUserViewModel userViewModel)
         {
+            ApplicationUser user = null;
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                user = userViewModel.Save();
                 return RedirectToAction("Index");
             }
             return View(user);

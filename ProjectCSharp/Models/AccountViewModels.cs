@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjectCSharp.Models
 {
@@ -103,6 +105,7 @@ namespace ProjectCSharp.Models
 
     public class ResetPasswordViewModel
     {
+       
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -128,5 +131,41 @@ namespace ProjectCSharp.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class EditUserViewModel
+    {
+        public string Id { get; set; }
+
+        [Required]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
+
+        public string RoleId { get; set; }
+
+        public ApplicationUser Save()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            ApplicationUser user = db.Users.Find(Id);
+            IdentityUserRole userRole = new IdentityUserRole();
+            userRole.UserId = Id;
+            userRole.RoleId = RoleId;
+            user.Id = Id;
+            user.FirstName = FirstName;
+            user.LastName = LastName;
+            user.Roles.Clear();
+            user.Roles.Add(userRole);
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+            return user;
+        }
     }
 }

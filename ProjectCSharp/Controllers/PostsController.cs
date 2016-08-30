@@ -96,13 +96,13 @@ namespace ProjectCSharp.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Body,Date")] Post post)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,Date,AuthorId")] EditPostViewModel postModel)
         {
+            Post post = null;
             if (ModelState.IsValid)
             {
-                post.Date = DateTime.Now;
-                db.Entry(post).State = EntityState.Modified;
-                db.SaveChanges();
+                postModel.Date = DateTime.Now;
+                post = postModel.Save();
                 this.AddNotification("Post edited!", NotificationType.INFO);
                 return RedirectToAction("Index");
             }
