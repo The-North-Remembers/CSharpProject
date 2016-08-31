@@ -134,6 +134,7 @@ namespace ProjectCSharp.Controllers
             if (ModelState.IsValid)
             {
                 user = userViewModel.Save();
+                this.AddNotification("User edited!", NotificationType.INFO);
                 return RedirectToAction("Index");
             }
             return View(user);
